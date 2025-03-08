@@ -1,27 +1,17 @@
-import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
-import {colorsQueryOption} from "@/application/useColors";
-import {ColorContainer} from "@/ui/color-cotainer";
 import {Suspense} from "react";
+import {PrefetchColorContainer} from "@/components/prefetch-color-container";
+import {PrefetchUserContainer} from "@/components/prefetch-user-container";
 
 export default async function Home() {
     return (
         <div>
-            <Suspense fallback={<div>Loading...</div>}>
-                <PrefetchQuery/>
+            <div>header onloading</div>
+            <input placeholder={'test ui'}/>
+            <Suspense fallback={<div>loading home 3seconds</div>}>
+                <PrefetchColorContainer/>
+            </Suspense>
+            <Suspense fallback={<div>loading user-info</div>}>
+                <PrefetchUserContainer/>
             </Suspense>
         </div>);
-}
-
-
-async function PrefetchQuery() {
-    const queryClient = new QueryClient();
-
-    await queryClient.prefetchQuery(colorsQueryOption)
-
-    return <HydrationBoundary state={dehydrate(queryClient)}>
-        <div> header</div>
-        <main>
-            <ColorContainer/>
-        </main>
-    </HydrationBoundary>
 }

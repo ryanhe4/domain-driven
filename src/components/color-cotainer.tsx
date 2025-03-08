@@ -2,11 +2,11 @@
 
 import {useColors} from "@/application/useColors";
 
-export function ColorContainer() {
+export default function ColorContainer() {
     const {data} = useColors();
 
     return <div>
-        {data.map(color => {
+        {data?.map(color => {
             return <div key={color.id}>
                 {color.name}
                 {color.hex}

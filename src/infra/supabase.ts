@@ -1,26 +1,22 @@
-import {SupabaseClient} from "@supabase/supabase-js";
-import browserClient from "@/infra/browser-client";
-import {delay} from "@/utils/delay";
+import {createClient} from "@/utils/browser-client";
 
 class MangoSupabaseClient {
-    client: SupabaseClient
-
-    constructor() {
-        if (typeof window !== 'undefined') {
-            this.client = browserClient;
-        } else {
-            this.client = browserClient;
-        }
+    getClient() {
+        return createClient();
     }
 
     async getAllColors() {
-        await delay(5000);
-        const {data} = await this.client.from("colors").select();
+        const client = this.getClient();
+        const {data} = await client.from("colors").select();
+        return data;
+    }
+
+    async getUser() {
+        const client = this.getClient();
+        const {data} = await client.auth.getUser();
         return data;
     }
 }
-
-
 
 const client = new MangoSupabaseClient();
 
