@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 export default function LoginPage() {
   return (
-    <form className="flex flex-col gap-2 p-10 border items-start max-w-1/2 mx-auto mt-10 bg-background ">
+    <form className="flex flex-col gap-2 p-10 border items-start max-w-3/4 mx-auto mt-10 bg-background md:max-w-1/2">
       <h2 className={'text-3xl font-semibold'}>Login / SignUp</h2>
       <Label htmlFor="email">Email:</Label>
       <Input id="email" name="email" type="email" required />

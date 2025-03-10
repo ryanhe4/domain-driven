@@ -1,10 +1,4 @@
-import client from "@/infra/supabase";
-
-class UserService {
-    async getCurrentUser() {
-        return await client.getUser();
-    }
-}
+class UserService {}
 
 const userService = new UserService();
 
