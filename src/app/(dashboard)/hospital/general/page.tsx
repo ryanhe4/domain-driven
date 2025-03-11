@@ -1,5 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { HospitalTabLayout } from '@/components/layouts/hospital-tab-layout';
+import { HospitalGeneralSetting } from '@/components/interfaces/hospital-general-setting';
+import { Suspense } from 'react';
+import { createServer } from '@/utils/server-client';
+import { serverClient } from '@/infra/supabase';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { getQueryClient } from '@/utils/get-query-client';
+import { fetchHospitalOption } from '@/application/useHospital';
+import HospitalSettingSkeleton from '@/components/interfaces/hospital-setting-skeleton';
 
 export default async function HospitalGeneralPage() {
   return (
@@ -27,7 +35,9 @@ export default async function HospitalGeneralPage() {
             </div>
           </div>
           <TabsContent value="general">
-            <HospitalTabLayout>gerneral setting</HospitalTabLayout>
+            <Suspense fallback={<HospitalSettingSkeleton />}>
+              <PrefetchHospitalSetting />
+            </Suspense>
           </TabsContent>
           <TabsContent value="doctor">
             <HospitalTabLayout>doctor setting</HospitalTabLayout>
@@ -35,5 +45,19 @@ export default async function HospitalGeneralPage() {
         </Tabs>
       </main>
     </>
+  );
+}
+
+async function PrefetchHospitalSetting() {
+  const client = await createServer();
+  const queryClient = getQueryClient();
+  serverClient.client = client;
+
+  await queryClient.prefetchQuery(fetchHospitalOption);
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <HospitalGeneralSetting />
+    </HydrationBoundary>
   );
 }
