@@ -1,5 +1,5 @@
 import client from '@/infra/supabase';
-import { Hospital } from '@/domain/hospital';
+import { Hospital, HospitalUpdate } from '@/domain/hospital';
 import hospitalRepository from '@/domain/hospital.repository';
 
 class HospitalService {
@@ -7,7 +7,7 @@ class HospitalService {
     return await client.getHospital();
   }
 
-  async updateHospital(hospital: Hospital) {
+  async updateHospital(hospital: HospitalUpdate) {
     return await hospitalRepository.updateHospital(hospital);
   }
 
